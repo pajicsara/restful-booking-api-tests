@@ -2,8 +2,10 @@ package tests;
 
 import base.BaseTest;
 import org.junit.jupiter.api.Test;
+import utils.AuthTokenManager;
 
 import static io.restassured.RestAssured.given;
+import static utils.AuthTokenManager.getToken;
 
 public class BookingTests extends BaseTest {
 
@@ -55,5 +57,11 @@ public class BookingTests extends BaseTest {
                 .get("/booking")
                 .then()
                 .statusCode(200);
+    }
+
+    @Test
+    void testToken() {
+        String token = AuthTokenManager.getToken();
+        System.out.println(token);
     }
 }
