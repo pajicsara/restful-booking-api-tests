@@ -2,6 +2,7 @@ package tests;
 
 import base.BaseTest;
 import org.junit.jupiter.api.Test;
+import testdata.BookingDataFactory;
 import utils.AuthTokenManager;
 
 import static io.restassured.RestAssured.given;
@@ -67,14 +68,7 @@ public class BookingTests extends BaseTest {
 
     BookingDates bookingDates = new BookingDates("2026-07-07", "2026-08-08");
 
-    Booking booking = new Booking(
-            "Sara",
-            "Test",
-            200,
-            true,
-            bookingDates,
-            "Lunch"
-    );
+    Booking booking = BookingDataFactory.createRandomBooking();
 
         //CREATE
         int bookingId =
@@ -99,7 +93,7 @@ public class BookingTests extends BaseTest {
                 .then()
                 .log().all()
                 .statusCode(200)
-                .body("firstname", equalTo("Sara"));
+                .body("firstname", equalTo(booking.getFirstname()));
 
         // UPDATE
         String token = AuthTokenManager.getToken();
