@@ -1,0 +1,8 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Sun Jun 21 22:01:47 UTC 2026","Sun Jun 21 22:01:47 UTC 2026","196","","tests.BookingTests","","tests.BookingTests","createBookingNegativeTest","createBookingNegativeTest()","Creating booking with invalid data"
+"passed","Sun Jun 21 22:01:46 UTC 2026","Sun Jun 21 22:01:47 UTC 2026","674","","tests.BookingTests","","tests.BookingTests","partialUpdateValidationTest","partialUpdateValidationTest()","Update existing booking and verifies if updated"
+"passed","Sun Jun 21 22:01:47 UTC 2026","Sun Jun 21 22:01:48 UTC 2026","448","","tests.BookingTests","","tests.BookingTests","createBookingTest","createBookingTest()","Creates a new booking and verifies it can be fetched"
+"passed","Sun Jun 21 22:01:45 UTC 2026","Sun Jun 21 22:01:46 UTC 2026","697","","tests.BookingTests","","tests.BookingTests","updateBookingTest","updateBookingTest()","Update existing booking and verifies if updated"
+"passed","Sun Jun 21 22:01:42 UTC 2026","Sun Jun 21 22:01:45 UTC 2026","2692","","tests.BookingTests","","tests.BookingTests","verifyDeleteBookingTest","verifyDeleteBookingTest()","Delete existing booking and verifies if deleted"
+"passed","Sun Jun 21 22:01:46 UTC 2026","Sun Jun 21 22:01:46 UTC 2026","646","","tests.BookingTests","","tests.BookingTests","deleteBookingTest","deleteBookingTest()","Delete existing booking and verifies if deleted"
+"passed","Sun Jun 21 22:01:48 UTC 2026","Sun Jun 21 22:01:49 UTC 2026","1308","","tests.BookingTests","","tests.BookingTests","fullBookingFlow","fullBookingFlow()",""
