@@ -2,6 +2,7 @@ package tests;
 
 import base.BaseTest;
 import helper.Booking;
+import io.qameta.allure.*;
 import org.junit.jupiter.api.Test;
 import services.BookingService;
 import testdata.BookingDataFactory;
@@ -11,8 +12,13 @@ import static org.hamcrest.Matchers.equalTo;
 import static tests.BaseTest.requestSpec;
 import static tests.BaseTest.service;
 
+@Epic("Restful Booking API")
+@Feature("Booking CRUD operations")
 public class BookingTests extends BaseTest {
 
+    @Story("Create booking")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Creates a new booking and verifies it can be fetched")
     @Test
     void createBookingTest() {
 
@@ -30,6 +36,9 @@ public class BookingTests extends BaseTest {
                 .body("lastname", equalTo(booking.getLastname()));
     }
 
+    @Story("Update booking")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Update existing booking and verifies if updated")
     @Test
     void updateBookingTest() {
 
@@ -51,6 +60,9 @@ public class BookingTests extends BaseTest {
                 .body("totalprice", equalTo(booking.getTotalprice() + 50));
     }
 
+    @Story("Update booking")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Update existing booking and verifies if updated")
     @Test
     void partialUpdateValidationTest() {
 
@@ -73,6 +85,9 @@ public class BookingTests extends BaseTest {
                 .body("additionalneeds", equalTo("BREAKFAST"));
     }
 
+    @Story("Delete booking")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Delete existing booking and verifies if deleted")
     @Test
     void deleteBookingTest() {
 
@@ -84,6 +99,9 @@ public class BookingTests extends BaseTest {
                 .statusCode(201);
     }
 
+    @Story("Delete booking")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Delete existing booking and verifies if deleted")
     @Test
     void verifyDeleteBookingTest() {
 
@@ -97,6 +115,9 @@ public class BookingTests extends BaseTest {
                 .statusCode(404);
     }
 
+    @Story("Create booking with invalid data")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Creating booking with invalid data")
     @Test
     void createBookingNegativeTest() {
 
