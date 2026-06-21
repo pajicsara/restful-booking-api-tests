@@ -60,8 +60,77 @@ public class BookingTests extends BaseTest {
     }
 
     @Test
-    void testToken() {
+    void fullBookingFlow() {
+
+        // 1. CREATE
+        String body = """
+    {
+        "firstname": "Sara",
+        "lastname": "QA",
+        "totalprice": 100,
+        "depositpaid": true,
+        "bookingdates": {
+            "checkin": "2025-01-01",
+            "checkout": "2025-01-05"
+        },
+        "additionalneeds": "Breakfast"
+    }
+    """;
+
+        int bookingId =
+                given()
+                        .log().all()
+                        .contentType("application/json")
+                        .body(body)
+                        .when()
+                        .post("/booking")
+                        .then()
+                        .statusCode(200)
+                        .extract()
+                        .path("bookingid");
+
+        // 2. GET
+        given()
+                .log().all()
+                .when()
+                .get("/booking/" + bookingId)
+                .then()
+                .statusCode(200);
+
+        // 3. UPDATE
         String token = AuthTokenManager.getToken();
-        System.out.println(token);
+
+        String updateBody = """
+    {
+        "firstname": "SaraUpdated",
+        "lastname": "QA",
+        "totalprice": 200,
+        "depositpaid": false,
+        "bookingdates": {
+            "checkin": "2025-01-01",
+            "checkout": "2025-01-06"
+        },
+        "additionalneeds": "Lunch"
+    }
+    """;
+
+        given()
+                .log().all()
+                .contentType("application/json")
+                .header("Cookie", "token=" + token)
+                .body(updateBody)
+                .when()
+                .put("/booking/" + bookingId)
+                .then()
+                .statusCode(200);
+
+        // 4. DELETE
+        given()
+                .log().all()
+                .header("Cookie", "token=" + token)
+                .when()
+                .delete("/booking/" + bookingId)
+                .then()
+                .statusCode(201);
     }
 }
