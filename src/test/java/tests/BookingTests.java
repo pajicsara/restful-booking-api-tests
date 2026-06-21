@@ -5,7 +5,8 @@ import org.junit.jupiter.api.Test;
 import utils.AuthTokenManager;
 
 import static io.restassured.RestAssured.given;
-import static utils.AuthTokenManager.getToken;
+import helper.Booking;
+import helper.BookingDates;
 
 public class BookingTests extends BaseTest {
 
@@ -61,6 +62,17 @@ public class BookingTests extends BaseTest {
 
     @Test
     void fullBookingFlow() {
+
+    BookingDates bookingDates = new BookingDates("2026-07-07", "2026-08-08");
+
+    Booking booking = new Booking(
+            "Sara",
+            "Test",
+            "200",
+            true,
+            bookingDates,
+            "Lunch"
+    );
 
         // 1. CREATE
         String body = """
