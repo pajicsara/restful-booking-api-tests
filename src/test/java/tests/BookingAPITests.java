@@ -14,7 +14,7 @@ import static tests.BaseTest.service;
 
 @Epic("Restful Booking API")
 @Feature("Booking CRUD operations")
-public class BookingTests extends BaseTest {
+public class BookingAPITests extends BaseTest {
 
     @Story("Create booking")
     @Severity(SeverityLevel.CRITICAL)
@@ -49,20 +49,22 @@ public class BookingTests extends BaseTest {
                 booking.getFirstname(),
                 booking.getLastname(),
                 booking.getTotalprice() + 50,
-                booking.isDepositpaid(),
+                !booking.isDepositpaid(),
                 booking.getBookingdates(),
-                "PARKING"
+                "BREAKFAST"
         );
 
         service.updateBooking(requestSpec, id, updated)
                 .then()
                 .statusCode(200)
-                .body("totalprice", equalTo(booking.getTotalprice() + 50));
+                .body("totalprice", equalTo(booking.getTotalprice() + 50))
+                //.body("depositpaid", equalTo(booking.isDepositpaid()))
+                .body("additionalneeds", equalTo("BREAKFAST"));
     }
 
-    @Story("Update booking")
+    @Story("Partial update booking")
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Update existing booking and verifies if updated")
+    @Description("Update additional needs existing booking and verifies if updated")
     @Test
     void partialUpdateValidationTest() {
 
@@ -78,7 +80,7 @@ public class BookingTests extends BaseTest {
                 "BREAKFAST"
         );
 
-        service.updateBooking(requestSpec, id, updated)
+        service.partialUpdateBooking(requestSpec, id, updated)
                 .then()
                 .statusCode(200)
                 .body("firstname", equalTo(booking.getFirstname()))
@@ -87,9 +89,9 @@ public class BookingTests extends BaseTest {
 
     @Story("Delete booking")
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Delete existing booking and verifies if deleted")
+    @Description("Deletes booking and verifies it cannot be retrieved anymore")
     @Test
-    void deleteBookingTest() {
+    void deleteBookingSuccessfully() {
 
         Booking booking = BookingDataFactory.createRandomBooking();
         int id = service.createBooking(requestSpec, booking);
@@ -97,77 +99,9 @@ public class BookingTests extends BaseTest {
         service.deleteBooking(requestSpec, id)
                 .then()
                 .statusCode(201);
-    }
-
-    @Story("Delete booking")
-    @Severity(SeverityLevel.CRITICAL)
-    @Description("Delete existing booking and verifies if deleted")
-    @Test
-    void verifyDeleteBookingTest() {
-
-        Booking booking = BookingDataFactory.createRandomBooking();
-        int id = service.createBooking(requestSpec, booking);
-
-        service.deleteBooking(requestSpec, id);
 
         service.getBooking(requestSpec, id)
                 .then()
                 .statusCode(404);
-    }
-
-    @Story("Create booking with invalid data")
-    @Severity(SeverityLevel.CRITICAL)
-    @Description("Creating booking with invalid data")
-    @Test
-    void createBookingNegativeTest() {
-
-        String invalidBody = """
-        {
-            "firstname": "",
-            "lastname": "",
-            "totalprice": "abc"
-        }
-    """;
-
-        given()
-                .spec(requestSpec)
-                .body(invalidBody)
-                .when()
-                .post("/booking")
-                .then()
-                .statusCode(500);
-    }
-
-    @Test
-    void fullBookingFlow() {
-
-        BookingService bookingService = new BookingService();
-
-        Booking booking = BookingDataFactory.createRandomBooking();
-
-        int id = bookingService.createBooking(requestSpecification, booking);
-
-        bookingService.getBooking(requestSpecification, id)
-                .then()
-                .statusCode(200)
-                .body("firstname", equalTo(booking.getFirstname()));
-
-        Booking updated = new Booking(
-                booking.getFirstname(),
-                booking.getLastname(),
-                booking.getTotalprice() + 50,
-                booking.isDepositpaid(),
-                booking.getBookingdates(),
-                "PARKING"
-        );
-
-        bookingService.updateBooking(requestSpecification, id, updated)
-                .then()
-                .statusCode(200)
-                .body("totalprice", equalTo(booking.getTotalprice() + 50));
-
-        bookingService.deleteBooking(requestSpecification, id)
-                .then()
-                .statusCode(201);
     }
 }

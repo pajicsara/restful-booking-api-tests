@@ -34,6 +34,16 @@ public class BaseApi {
                 .put(endpoint);
     }
 
+    protected Response patch(RequestSpecification spec, String endpoint, Object body, String token) {
+        return given()
+                .log().all()
+                .spec(spec)
+                .header("Cookie", "token=" + token)
+                .body(body)
+                .when()
+                .patch(endpoint);
+    }
+
     protected Response delete(RequestSpecification spec, String endpoint, String token) {
         return given()
                 .log().all()

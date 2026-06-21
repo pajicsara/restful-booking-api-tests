@@ -7,6 +7,8 @@ import utils.AuthTokenManager;
 
 import io.qameta.allure.Step;
 
+import static io.restassured.RestAssured.patch;
+
 public class BookingService extends BaseApi {
 
     private static final String BASE_PATH = "/booking";
@@ -31,6 +33,12 @@ public class BookingService extends BaseApi {
     public Response updateBooking(RequestSpecification spec, int id, Booking booking) {
         String token = AuthTokenManager.getToken();
         return put(spec, BASE_PATH + "/" + id, booking, token);
+    }
+
+    @Step("PATCH partial update booking with id: {id}")
+    public Response partialUpdateBooking(RequestSpecification spec, int id, Booking booking) {
+        String token = AuthTokenManager.getToken();
+        return patch(spec, BASE_PATH + "/" + id, booking, token);
     }
 
     @Step("Delete booking with id: {id}")
