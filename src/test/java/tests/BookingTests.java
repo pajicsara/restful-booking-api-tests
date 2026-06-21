@@ -1,19 +1,20 @@
 package tests;
 
 import base.BaseTest;
+import helper.Booking;
+import helper.BookingDates;
 import org.junit.jupiter.api.Test;
+import services.BookingService;
 import testdata.BookingDataFactory;
 import utils.AuthTokenManager;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
-import helper.Booking;
-import helper.BookingDates;
-
 public class BookingTests extends BaseTest {
 
     static int bookingId;
+
 
     @Test
     void createBooking() {
@@ -66,7 +67,7 @@ public class BookingTests extends BaseTest {
     @Test
     void fullBookingFlow() {
 
-    BookingDates bookingDates = new BookingDates("2026-07-07", "2026-08-08");
+   /* BookingDates bookingDates = new BookingDates("2026-07-07", "2026-08-08");
 
     Booking booking = BookingDataFactory.createRandomBooking();
 
@@ -99,12 +100,12 @@ public class BookingTests extends BaseTest {
         String token = AuthTokenManager.getToken();
 
         Booking updatedBooking = new Booking(
-                "SaraUpdated",
-                "QA",
-                200,
-                false,
-                bookingDates,
-                "Lunch"
+                booking.getFirstname(),
+                booking.getLastname(),
+                booking.getTotalprice() + 50,
+                booking.isDepositpaid(),
+                booking.getBookingdates(),
+                "PARKING"
         );
 
         given()
@@ -117,7 +118,9 @@ public class BookingTests extends BaseTest {
                 .then()
                 .log().all()
                 .statusCode(200)
-                .body("firstname", equalTo("SaraUpdated"));
+                .body("firstname", equalTo(booking.getFirstname()))
+                .body("totalprice", equalTo(booking.getTotalprice() + 50))
+                .body("additionalneeds", equalTo("PARKING"));
 
         // DELETE
         given()
@@ -128,6 +131,34 @@ public class BookingTests extends BaseTest {
                 .delete("/booking/" + bookingId)
                 .then()
                 .log().all()
+                .statusCode(201); */
+        BookingService bookingService = new BookingService();
+
+        Booking booking = BookingDataFactory.createRandomBooking();
+
+        int id = bookingService.createBooking(requestSpecification, booking);
+
+        bookingService.getBooking(requestSpecification, id)
+                .then()
+                .statusCode(200)
+                .body("firstname", equalTo(booking.getFirstname()));
+
+        Booking updated = new Booking(
+                booking.getFirstname(),
+                booking.getLastname(),
+                booking.getTotalprice() + 50,
+                booking.isDepositpaid(),
+                booking.getBookingdates(),
+                "PARKING"
+        );
+
+        bookingService.updateBooking(requestSpecification, id, updated)
+                .then()
+                .statusCode(200)
+                .body("totalprice", equalTo(booking.getTotalprice() + 50));
+
+        bookingService.deleteBooking(requestSpecification, id)
+                .then()
                 .statusCode(201);
     }
 }
