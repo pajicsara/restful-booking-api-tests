@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import utils.AuthTokenManager;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
+
 import helper.Booking;
 import helper.BookingDates;
 
@@ -68,81 +70,70 @@ public class BookingTests extends BaseTest {
     Booking booking = new Booking(
             "Sara",
             "Test",
-            "200",
+            200,
             true,
             bookingDates,
             "Lunch"
     );
 
-        // 1. CREATE
-        String body = """
-    {
-        "firstname": "Sara",
-        "lastname": "QA",
-        "totalprice": 100,
-        "depositpaid": true,
-        "bookingdates": {
-            "checkin": "2025-01-01",
-            "checkout": "2025-01-05"
-        },
-        "additionalneeds": "Breakfast"
-    }
-    """;
-
+        //CREATE
         int bookingId =
                 given()
+                        .spec(requestSpecification)
                         .log().all()
-                        .contentType("application/json")
-                        .body(body)
+                        .body(booking)
                         .when()
                         .post("/booking")
                         .then()
+                        .log().all()
                         .statusCode(200)
                         .extract()
                         .path("bookingid");
 
-        // 2. GET
+        // GET
         given()
+                .spec(requestSpecification)
                 .log().all()
                 .when()
                 .get("/booking/" + bookingId)
                 .then()
-                .statusCode(200);
+                .log().all()
+                .statusCode(200)
+                .body("firstname", equalTo("Sara"));
 
-        // 3. UPDATE
+        // UPDATE
         String token = AuthTokenManager.getToken();
 
-        String updateBody = """
-    {
-        "firstname": "SaraUpdated",
-        "lastname": "QA",
-        "totalprice": 200,
-        "depositpaid": false,
-        "bookingdates": {
-            "checkin": "2025-01-01",
-            "checkout": "2025-01-06"
-        },
-        "additionalneeds": "Lunch"
-    }
-    """;
+        Booking updatedBooking = new Booking(
+                "SaraUpdated",
+                "QA",
+                200,
+                false,
+                bookingDates,
+                "Lunch"
+        );
 
         given()
+                .spec(requestSpecification)
                 .log().all()
-                .contentType("application/json")
                 .header("Cookie", "token=" + token)
-                .body(updateBody)
+                .body(updatedBooking)
                 .when()
                 .put("/booking/" + bookingId)
                 .then()
-                .statusCode(200);
+                .log().all()
+                .statusCode(200)
+                .body("firstname", equalTo("SaraUpdated"));
 
-        // 4. DELETE
+        // DELETE
         given()
+                .spec(requestSpecification)
                 .log().all()
                 .header("Cookie", "token=" + token)
                 .when()
                 .delete("/booking/" + bookingId)
                 .then()
+                .log().all()
                 .statusCode(201);
     }
 }
