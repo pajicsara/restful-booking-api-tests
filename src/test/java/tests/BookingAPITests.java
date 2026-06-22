@@ -1,6 +1,5 @@
 package tests;
 
-import base.BaseTest;
 import helper.Booking;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.Test;
@@ -8,8 +7,6 @@ import testdata.BookingDataFactory;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-import static tests.BaseTest.requestSpec;
-import static tests.BaseTest.service;
 
 @Epic("Restful Booking API")
 @Feature("Booking CRUD operations")
