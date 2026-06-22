@@ -69,7 +69,7 @@ mvn clean test
 ### Run Allure report
 ```bash
 mvn clean test
-allure allure:serve
+mvn allure:serve
 ```
 
 ---
