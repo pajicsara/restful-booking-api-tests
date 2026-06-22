@@ -11,10 +11,8 @@ import testdata.BookingDataFactory;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-import static tests.BaseTest.requestSpec;
-import static tests.BaseTest.service;
 
-public class BookingDefectTests {
+public class BookingDefectTests extends BaseTest {
 
     @Disabled("BUG: API allows checkout before checkin date (should return 400)")
     @Test

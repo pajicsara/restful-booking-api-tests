@@ -7,12 +7,10 @@ import testdata.BookingDataFactory;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
-import static tests.BaseTest.requestSpec;
-import static tests.BaseTest.service;
 import static utils.AuthTokenManager.loginWithInvalidCredentials;
 import static utils.AuthTokenManager.loginWithValidCredentials;
 
-public class AuthTests {
+public class AuthTests extends BaseTest {
 
     @Story("Valid authentication")
     @Test
