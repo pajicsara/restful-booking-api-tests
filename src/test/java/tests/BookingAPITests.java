@@ -4,7 +4,6 @@ import base.BaseTest;
 import helper.Booking;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.Test;
-import services.BookingService;
 import testdata.BookingDataFactory;
 
 import static io.restassured.RestAssured.given;
