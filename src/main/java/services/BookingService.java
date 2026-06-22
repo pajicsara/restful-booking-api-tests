@@ -31,19 +31,19 @@ public class BookingService extends BaseApi {
 
     @Step("Update booking with payload: {booking}")
     public Response updateBooking(RequestSpecification spec, int id, Booking booking) {
-        String token = AuthTokenManager.getToken();
+        String token = AuthTokenManager.getValidToken();
         return put(spec, BASE_PATH + "/" + id, booking, token);
     }
 
     @Step("PATCH partial update booking with id: {id}")
     public Response partialUpdateBooking(RequestSpecification spec, int id, Booking booking) {
-        String token = AuthTokenManager.getToken();
+        String token = AuthTokenManager.getValidToken();
         return patch(spec, BASE_PATH + "/" + id, booking, token);
     }
 
     @Step("Delete booking with id: {id}")
     public Response deleteBooking(RequestSpecification spec, int id) {
-        String token = AuthTokenManager.getToken();
+        String token = AuthTokenManager.getValidToken();
         return delete(spec, BASE_PATH + "/" + id, token);
     }
 }
