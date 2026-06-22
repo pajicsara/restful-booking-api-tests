@@ -1,6 +1,7 @@
 package testdata;
 
 import com.github.javafaker.Faker;
+import helper.BookingDates;
 
 import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
@@ -26,13 +27,17 @@ public class DataFaker {
         return faker.bool().bool();
     }
 
-    public static String randomFutureDate() {
-        LocalDate start = LocalDate.now().plusDays(1);
-        LocalDate end = LocalDate.now().plusMonths(6);
+    public static BookingDates randomBookingDates() {
 
-        long randomDay = ThreadLocalRandom.current()
-                .nextLong(start.toEpochDay(), end.toEpochDay());
+        LocalDate checkin = LocalDate.now()
+                .plusDays(ThreadLocalRandom.current().nextInt(1, 90));
 
-        return LocalDate.ofEpochDay(randomDay).toString();
+        LocalDate checkout = checkin
+                .plusDays(ThreadLocalRandom.current().nextInt(1, 14));
+
+        return new BookingDates(
+                checkin.toString(),
+                checkout.toString()
+        );
     }
 }
